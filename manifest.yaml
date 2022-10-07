@@ -1,0 +1,14 @@
+---
+applications:
+  - name: token
+    memory: ((MEMORY))
+    instances: ((INSTANCES))
+    buildpacks:
+      - python_buildpack
+    command: python manage.py runserver -h 0.0.0.0 -p 8080
+    services:
+      - tokendb
+    env:
+      APP_SETTINGS: "project.server.config.CloudDevelopmentConfig"
+      DB_USER: "nothing"
+      DB_PASSWORD: "nothing"
