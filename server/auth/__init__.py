@@ -1,1 +1,1 @@
-# project/server/auth/__init__.py
+# server/auth/__init__.py

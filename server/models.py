@@ -1,4 +1,4 @@
-# project/server/models.py
+# server/models.py
 
 import datetime
 import uuid

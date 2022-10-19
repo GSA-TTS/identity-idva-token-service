@@ -1,4 +1,4 @@
-# project/server/auth/responses.py
+# server/auth/responses.py
 
 from flask import make_response, jsonify
 

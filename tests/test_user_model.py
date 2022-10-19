@@ -1,4 +1,4 @@
-# project/tests/test_user_model.py
+# tests/test_user_model.py
 
 import unittest
 from uuid import UUID

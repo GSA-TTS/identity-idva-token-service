@@ -1,14 +1,31 @@
-# project/server/auth/views.py
+# server/auth/views.py
 
 from flask import Blueprint, request, make_response, jsonify
 from flask.views import MethodView
-
-from server import db
+from server import db, config
 from server.models import Token
 from server.auth.responses import Responses
 
+import server.config as config
+import functools
 
 auth_blueprint = Blueprint("auth", __name__)
+
+
+def verify_key(func):
+    @functools.wraps(func)
+    def decorator(*args, **kwargs):
+        if request.json:
+            api_key = request.json.get("api_key")
+        else:
+            return {"message": "API key not provided"}, 400
+        if api_key == config["SECRET_KEY"]:
+            return func(*args, **kwargs)
+        else:
+            return Responses.unauthorized()
+
+    return decorator
+    # return key == config['SECRET_KEY']
 
 
 class RegisterAPI(MethodView):
@@ -16,13 +33,15 @@ class RegisterAPI(MethodView):
     Token Registration Resource
     """
 
+    decorators = [verify_key]
+
     def post(self):
         # get the post data
         post_data = request.get_json()
         try:
             token = Token()
-            if post_data and post_data.seconds:
-                token = Token(seconds=post_data.seconds)
+            if post_data and post_data.get("seconds"):
+                token = Token(seconds=post_data["seconds"])
             # insert the user
             db.session.add(token)
             db.session.commit()
@@ -35,16 +54,19 @@ class RegisterAPI(MethodView):
             }
             return make_response(jsonify(responseObject)), 201
         except Exception as e:
-            print(e)
+            print("REGISTERATION EXCEPTION:\n\n\n")
+            print(f"Exception: {e}")
             return Responses.error()
 
 
 class ValidateAPI(MethodView):
     """
-    Token validation
+    Token Validation Resource
     return with a 200 if the token exists
     return with a 403 otherwise
     """
+
+    decorators = [verify_key]
 
     def post(self):
         post_data = request.get_json()
@@ -62,6 +84,13 @@ class ValidateAPI(MethodView):
 
 
 class RefreshAPI(MethodView):
+    """
+    Token Refresh Resource
+    Expends a use of a token. If a token's refresh value drops to 0 it is exhausted
+    """
+
+    decorators = [verify_key]
+
     def post(self):
         post_data = request.get_json()
         try:
@@ -90,6 +119,12 @@ class RefreshAPI(MethodView):
 
 
 class ExhaustAPI(MethodView):
+    """
+    Token Exhaustion Resource
+    """
+
+    decorators = [verify_key]
+
     def post(self):
         post_data = request.get_json()
         try:

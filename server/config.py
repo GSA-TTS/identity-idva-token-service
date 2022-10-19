@@ -1,4 +1,4 @@
-# project/server/config.py
+# server/config.py
 
 from lib2to3.pytree import Base
 import os
@@ -25,12 +25,15 @@ class BaseConfig:
 class LocalDevConfig(Base):
     """Development configuration for local deployments."""
 
+    SECRET_KEY = os.getenv("SECRET_KEY")
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = postgres_local_base + local_database_name
 
 
 class CloudDevConfig(BaseConfig):
     """Development configuration for cloud foundry deployments."""
+
+    SECRET_KEY = os.getenv("SECRET_KEY")
 
     vcap_services = os.getenv("VCAP_SERVICES", "")
     try:

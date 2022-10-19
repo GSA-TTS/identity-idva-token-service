@@ -5,10 +5,11 @@ applications:
     instances: ((INSTANCES))
     buildpacks:
       - python_buildpack
-    command: python manage.py runserver -h 0.0.0.0 -p 8080
+    command: gunicorn server:app --bind 0.0.0.0:8080
     services:
       - tokendb
     env:
-      APP_SETTINGS: "project.server.config.CloudDevelopmentConfig"
+      APP_SETTINGS: "server.config.CloudDevConfig"
       DB_USER: "nothing"
       DB_PASSWORD: "nothing"
+      SECRET_KEY: ((SECRET_KEY))
