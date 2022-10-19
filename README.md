@@ -51,7 +51,7 @@ python manage.py test
 Request body:
 {
   "api_key": <api_key>,
-  "seconds": <seconds> *OPTIONAL*
+  "seconds": <seconds> //OPTIONAL
 }
 ```
 
