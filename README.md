@@ -43,10 +43,6 @@ python -m pytest
 python manage.py test
 ```
 
-### Viewing API Endpoints and documentation
-Documentation can be viewed locally by running the application and visiting
-http://127.0.0.1:8000/redoc
-
 ### Deploying to Cloud.gov during development
 All deployments require having the correct Cloud.gov credentials in place. If
 you haven't already, visit [Cloud.gov](https://cloud.gov) and set up your
@@ -59,7 +55,8 @@ a vars.yaml file that includes runtime variables referenced. For info, see
 Running the following `cf` command will deploy the application to cloud.gov
 ```shell
 cf push --vars-file vars.yaml \
-  --var ENVIRONMENT=<env>
+  --var ENVIRONMENT=<env> \
+  --var SECRET_KEY=<key>
 ```
 
 ## Public domain
