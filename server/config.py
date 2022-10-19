@@ -1,6 +1,5 @@
 # server/config.py
 
-from lib2to3.pytree import Base
 import os
 import json
 import logging
@@ -22,7 +21,7 @@ class BaseConfig:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
-class LocalDevConfig(Base):
+class LocalDevConfig(BaseConfig):
     """Development configuration for local deployments."""
 
     SECRET_KEY = os.getenv("SECRET_KEY")
