@@ -2,6 +2,8 @@
 The IDVA Token microservice is a Python Flask
 application that exposes an API for generating and validating simple tokens.
 
+Tokens are at default valid for 5 minutes. This time can be adjusted when registering a token.
+
 ## Building Locally
 
 ### Pre-requisites
