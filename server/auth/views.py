@@ -13,6 +13,11 @@ auth_blueprint = Blueprint("auth", __name__)
 
 
 def verify_key(func):
+    """
+    Authentication decorator function.
+    To be used by every endpoint.
+    """
+
     @functools.wraps(func)
     def decorator(*args, **kwargs):
         if request.json:
@@ -25,7 +30,6 @@ def verify_key(func):
             return Responses.unauthorized()
 
     return decorator
-    # return key == config['SECRET_KEY']
 
 
 class RegisterAPI(MethodView):
