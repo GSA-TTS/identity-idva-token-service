@@ -47,6 +47,7 @@ python manage.py test
 
 ### API Endpoints
 #### Token Registering
+Create a new token.
 `POST /auth/register`
 
 ```
@@ -58,6 +59,7 @@ Request body:
 ```
 
 #### Token Validating
+Validates a token without changing its properties.
 `POST /auth/validate`
 
 ```
@@ -68,8 +70,9 @@ Request body:
 }
 ```
 
-#### Token Refreshing
-`POST /auth/refresh`
+#### Token Invoking
+Invokes a token, decrementing its uses by 1.
+`POST /auth/invoke`
 
 ```
 Request body:
@@ -80,6 +83,7 @@ Request body:
 ```
 
 #### Token Exhausting
+Exhausts a token rendering it useless.
 `POST /auth/exhaust`
 
 ```

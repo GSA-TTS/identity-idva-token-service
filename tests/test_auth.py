@@ -105,7 +105,7 @@ class TestAuthBlueprint(BaseTestCase):
             self.assertTrue(response.content_type == "application/json")
             self.assertEqual(response.status_code, 403)
 
-    def test_validation_refresh(self):
+    def test_validation_invoke(self):
         """Test for validity of registered token"""
         with self.client:
             # register token with 1 second expiration
@@ -127,9 +127,9 @@ class TestAuthBlueprint(BaseTestCase):
             self.assertTrue(response.content_type == "application/json")
             self.assertEqual(response.status_code, 201)
 
-            # refresh token (valid attempt)
+            # invoke token (valid attempt)
             response = self.client.post(
-                "/auth/refresh",
+                "/auth/invoke",
                 data=json.dumps(
                     {"api_key": config["SECRET_KEY"], "auth_token": auth_token}
                 ),
@@ -137,11 +137,11 @@ class TestAuthBlueprint(BaseTestCase):
             )
             data = json.loads(response.data)
             self.assertTrue(data["status"] == "success")
-            self.assertTrue(data["message"] == "Token successfully refreshed")
+            self.assertTrue(data["message"] == "Token successfully invoked")
             self.assertTrue(response.content_type == "application/json")
             self.assertEqual(response.status_code, 200)
 
-    def test_validation_refresh_exhausted(self):
+    def test_validation_invoke_exhausted(self):
         """Test for validity of registered token"""
         with self.client:
             # register token with 1 second expiration
@@ -159,16 +159,16 @@ class TestAuthBlueprint(BaseTestCase):
             self.assertTrue(response.content_type == "application/json")
             self.assertEqual(response.status_code, 201)
 
-            # refresh token (valid attempt)
+            # invoke token (valid attempt)
             self.client.post(
-                "/auth/refresh",
+                "/auth/invoke",
                 data=json.dumps(
                     {"api_key": config["SECRET_KEY"], "auth_token": auth_token}
                 ),
                 content_type="application/json",
             )
             response = self.client.post(
-                "/auth/refresh",
+                "/auth/invoke",
                 data=json.dumps(
                     {"api_key": config["SECRET_KEY"], "auth_token": auth_token}
                 ),

@@ -87,9 +87,9 @@ class ValidateAPI(MethodView):
             return Responses.unauthorized()
 
 
-class RefreshAPI(MethodView):
+class InvokeAPI(MethodView):
     """
-    Token Refresh Resource
+    Token Invocation Resource
     Expends a use of a token. If a token's refresh value drops to 0 it is exhausted
     """
 
@@ -146,7 +146,7 @@ class ExhaustAPI(MethodView):
 
 registration_view = RegisterAPI.as_view("register_api")
 validation_view = ValidateAPI.as_view("validation_api")
-refresh_view = RefreshAPI.as_view("refresh_api")
+invoke_view = InvokeAPI.as_view("invoke_api")
 exuast_view = ExhaustAPI.as_view("exhaust_api")
 
 auth_blueprint.add_url_rule(
@@ -155,5 +155,5 @@ auth_blueprint.add_url_rule(
 auth_blueprint.add_url_rule(
     "/auth/validate", view_func=validation_view, methods=["POST"]
 )
-auth_blueprint.add_url_rule("/auth/refresh", view_func=refresh_view, methods=["POST"])
+auth_blueprint.add_url_rule("/auth/invoke", view_func=invoke_view, methods=["POST"])
 auth_blueprint.add_url_rule("/auth/exhaust", view_func=exuast_view, methods=["POST"])
