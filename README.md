@@ -43,6 +43,51 @@ python -m pytest
 python manage.py test
 ```
 
+### API Endpoints
+#### Token Registering
+`POST /auth/register`
+
+```
+Request body:
+{
+  "api_key": <api_key>,
+  "seconds": <seconds> *OPTIONAL*
+}
+```
+
+#### Token Validating
+`POST /auth/validate`
+
+```
+Request body:
+{
+  "api_key": <api_key>,
+  "auth_token": <auth_token>
+}
+```
+
+#### Token Refreshing
+`POST /auth/refresh`
+
+```
+Request body:
+{
+  "api_key": <api_key>,
+  "auth_token": <auth_token>
+}
+```
+
+#### Token Exhausting
+`POST /auth/exhaust`
+
+```
+Request body:
+{
+  "api_key": <api_key>,
+  "auth_token": <auth_token>
+}
+```
+
 ### Deploying to Cloud.gov during development
 All deployments require having the correct Cloud.gov credentials in place. If
 you haven't already, visit [Cloud.gov](https://cloud.gov) and set up your
