@@ -24,7 +24,7 @@ class BaseConfig:
 class LocalDevConfig(BaseConfig):
     """Development configuration for local deployments."""
 
-    SECRET_KEY = os.getenv("SECRET_KEY")
+    SECRET_KEY = os.getenv("SECRET_KEY", "this_is_a_secret")
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = postgres_local_base + local_database_name
 

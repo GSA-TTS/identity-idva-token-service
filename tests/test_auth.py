@@ -14,9 +14,7 @@ class TestAuthBlueprint(BaseTestCase):
         """Test for token registration"""
         with self.client:
             response = self.client.post(
-                "/auth/register",
-                data=json.dumps({"api_key": config["SECRET_KEY"]}),
-                content_type="application/json",
+                "/auth/register", headers={"X_API_KEY": config["SECRET_KEY"]}
             )
             data = json.loads(response.data)
             self.assertEquals(data["status"], "success")
@@ -29,9 +27,7 @@ class TestAuthBlueprint(BaseTestCase):
         """Test for validity of registered token"""
         with self.client:
             response = self.client.post(
-                "/auth/register",
-                data=json.dumps({"api_key": config["SECRET_KEY"]}),
-                content_type="application/json",
+                "/auth/register", headers={"X_API_KEY": config["SECRET_KEY"]}
             )
             data = json.loads(response.data)
             auth_token = data["auth_token"]
@@ -44,9 +40,8 @@ class TestAuthBlueprint(BaseTestCase):
             # registered user login
             response = self.client.post(
                 "/auth/validate",
-                data=json.dumps(
-                    {"api_key": config["SECRET_KEY"], "auth_token": auth_token}
-                ),
+                headers={"X-API-Key": config["SECRET_KEY"]},
+                data=json.dumps({"auth_token": auth_token}),
                 content_type="application/json",
             )
             data = json.loads(response.data)
@@ -60,9 +55,8 @@ class TestAuthBlueprint(BaseTestCase):
         with self.client:
             response = self.client.post(
                 "/auth/validate",
-                data=json.dumps(
-                    {"api_key": config["SECRET_KEY"], "auth_token": "NOT_A_TOKEN"}
-                ),
+                headers={"X-API-Key": config["SECRET_KEY"]},
+                data=json.dumps({"auth_token": "NOT_A_TOKEN"}),
                 content_type="application/json",
             )
             data = json.loads(response.data)
@@ -77,7 +71,8 @@ class TestAuthBlueprint(BaseTestCase):
             # register token with 1 second expiration
             response = self.client.post(
                 "/auth/register",
-                data=json.dumps({"api_key": config["SECRET_KEY"], "seconds": 1}),
+                headers={"X-API-Key": config["SECRET_KEY"]},
+                data=json.dumps({"seconds": 1}),
                 content_type="application/json",
             )
             data = json.loads(response.data)
@@ -94,9 +89,8 @@ class TestAuthBlueprint(BaseTestCase):
             sleep(5)
             response = self.client.post(
                 "/auth/validate",
-                data=json.dumps(
-                    {"api_key": config["SECRET_KEY"], "auth_token": auth_token}
-                ),
+                headers={"X-API-Key": config["SECRET_KEY"]},
+                data=json.dumps({"auth_token": auth_token}),
                 content_type="application/json",
             )
             data = json.loads(response.data)
@@ -111,12 +105,7 @@ class TestAuthBlueprint(BaseTestCase):
             # register token with 1 second expiration
             response = self.client.post(
                 "/auth/register",
-                data=json.dumps(
-                    {
-                        "api_key": config["SECRET_KEY"],
-                    }
-                ),
-                content_type="application/json",
+                headers={"X-API-Key": config["SECRET_KEY"]},
             )
             data = json.loads(response.data)
             auth_token = data["auth_token"]
@@ -130,9 +119,8 @@ class TestAuthBlueprint(BaseTestCase):
             # invoke token (valid attempt)
             response = self.client.post(
                 "/auth/invoke",
-                data=json.dumps(
-                    {"api_key": config["SECRET_KEY"], "auth_token": auth_token}
-                ),
+                headers={"X-API-Key": config["SECRET_KEY"]},
+                data=json.dumps({"auth_token": auth_token}),
                 content_type="application/json",
             )
             data = json.loads(response.data)
@@ -145,9 +133,12 @@ class TestAuthBlueprint(BaseTestCase):
         """Test for validity of registered token"""
         with self.client:
             # register token with 1 second expiration
+            # key = "something " + config["SECRET_KEY"]
+            x = config["SECRET_KEY"]
             response = self.client.post(
                 "/auth/register",
-                data=json.dumps({"api_key": config["SECRET_KEY"], "seconds": 60}),
+                headers={"X-API-Key": config["SECRET_KEY"]},
+                data=json.dumps({"seconds": 60}),
                 content_type="application/json",
             )
             data = json.loads(response.data)
@@ -160,18 +151,17 @@ class TestAuthBlueprint(BaseTestCase):
             self.assertEqual(response.status_code, 201)
 
             # invoke token (valid attempt)
+            key = "something " + config["SECRET_KEY"]
             self.client.post(
                 "/auth/invoke",
-                data=json.dumps(
-                    {"api_key": config["SECRET_KEY"], "auth_token": auth_token}
-                ),
+                headers={"X-API-Key": config["SECRET_KEY"]},
+                data=json.dumps({"auth_token": auth_token}),
                 content_type="application/json",
             )
             response = self.client.post(
                 "/auth/invoke",
-                data=json.dumps(
-                    {"api_key": config["SECRET_KEY"], "auth_token": auth_token}
-                ),
+                headers={"X-API-Key": config["SECRET_KEY"]},
+                data=json.dumps({"auth_token": auth_token}),
                 content_type="application/json",
             )
             data = json.loads(response.data)
@@ -185,7 +175,8 @@ class TestAuthBlueprint(BaseTestCase):
             # register token with 1 second expiration
             response = self.client.post(
                 "/auth/register",
-                data=json.dumps({"api_key": config["SECRET_KEY"], "seconds": 60}),
+                headers={"X-API-Key": config["SECRET_KEY"]},
+                data=json.dumps({"seconds": 60}),
                 content_type="application/json",
             )
             data = json.loads(response.data)
@@ -200,9 +191,8 @@ class TestAuthBlueprint(BaseTestCase):
             # exhaust token (valid attempt)
             response = self.client.post(
                 "/auth/exhaust",
-                data=json.dumps(
-                    {"api_key": config["SECRET_KEY"], "auth_token": auth_token}
-                ),
+                headers={"X-API-Key": config["SECRET_KEY"]},
+                data=json.dumps({"auth_token": auth_token}),
                 content_type="application/json",
             )
             data = json.loads(response.data)

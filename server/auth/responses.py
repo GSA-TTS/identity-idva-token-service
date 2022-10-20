@@ -17,9 +17,7 @@ class Responses:
     def refresh():
         return (
             make_response(
-                jsonify(
-                    {"status": "success", "message": "Token successfully refreshed"}
-                )
+                jsonify({"status": "success", "message": "Token successfully invoked"})
             ),
             200,
         )
