@@ -35,9 +35,17 @@ def register():
     # get the post data
     post_data = request.get_json()
     try:
-        token = Token()
-        if post_data and post_data.get("seconds"):
-            token = Token(seconds=post_data["seconds"])
+        seconds = config["DEFAULT_SECONDS"]
+        uses = config["DEFAULT_USES"]
+
+        if post_data:
+            if post_data.get("seconds"):
+                seconds = post_data.get("seconds")
+            if post_data.get("uses"):
+                uses = post_data.get("uses")
+
+        token = Token(seconds, uses)
+
         # insert the user
         db.session.add(token)
         db.session.commit()

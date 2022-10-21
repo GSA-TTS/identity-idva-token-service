@@ -3,14 +3,16 @@
 import unittest
 from uuid import UUID
 
-from server import db
+from server import db, config
 from server.models import Token
 from tests.base import BaseTestCase
 
 
 class TestUserModel(BaseTestCase):
     def test_encode_auth_token(self):
-        token = Token()
+        seconds = config["DEFAULT_SECONDS"]
+        uses = config["DEFAULT_USES"]
+        token = Token(seconds, uses)
 
         db.session.add(token)
         db.session.commit()

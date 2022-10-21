@@ -24,6 +24,9 @@ class BaseConfig:
 class LocalDevConfig(BaseConfig):
     """Development configuration for local deployments."""
 
+    DEFAULT_SECONDS = 10
+    DEFAULT_USES = 1
+
     SECRET_KEY = os.getenv("SECRET_KEY", "this_is_a_secret")
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = postgres_local_base + local_database_name
@@ -31,6 +34,9 @@ class LocalDevConfig(BaseConfig):
 
 class CloudDevConfig(BaseConfig):
     """Development configuration for cloud foundry deployments."""
+
+    DEFAULT_SECONDS = 604800
+    DEFAULT_USES = 1
 
     SECRET_KEY = os.getenv("SECRET_KEY")
 

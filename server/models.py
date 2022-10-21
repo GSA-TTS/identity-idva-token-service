@@ -17,12 +17,12 @@ class Token(db.Model):
     expires_on = db.Column(db.DateTime, nullable=False)
     refresh = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, seconds=300):
+    def __init__(self, seconds, uses):
         self.registered_on = datetime.datetime.now()
         self.expires_on = datetime.datetime.now() + datetime.timedelta(
             days=0, seconds=seconds
         )
-        self.refresh = 1
+        self.refresh = uses
 
     def is_expired(self):
         time_of_request = datetime.datetime.now()
