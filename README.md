@@ -2,7 +2,7 @@
 The IDVA Token microservice is a Python Flask
 application that exposes an API for generating and validating simple tokens.
 
-Tokens are at default valid for 5 minutes. This time can be adjusted when registering a token.
+Tokens are at default valid for 7 days and have 1 use. Time and uses can be adjusted when registering a token.
 
 ## Building Locally
 
@@ -38,6 +38,13 @@ create database idva_token;
 # \q
 ```
 
+To set a custom secret key, use the following environment variable: `SECRET_KEY`.
+
+The project can be ran locally with:
+```shell
+python manage.py run
+```
+
 ### Running the application
 After completing [development setup](#development-setup) application locally with:
 ```shell
@@ -46,6 +53,14 @@ python manage.py test
 ```
 
 ### API Endpoints
+
+#### Authorization
+```
+Headers
+
+X-API-Key: <api-key>
+```
+
 #### Token Registering
 Create a new token.
 
@@ -54,8 +69,8 @@ Create a new token.
 ```
 Request body:
 {
-  "api_key": <api_key>,
-  "seconds": <seconds> //OPTIONAL
+  "seconds": <seconds>, //OPTIONAL
+  "uses": <uses> //OPTIONAL
 }
 ```
 
@@ -67,7 +82,6 @@ Validates a token without changing its properties.
 ```
 Request body:
 {
-  "api_key": <api_key>,
   "auth_token": <auth_token>
 }
 ```
@@ -80,7 +94,6 @@ Invokes a token, decrementing its uses by 1.
 ```
 Request body:
 {
-  "api_key": <api_key>,
   "auth_token": <auth_token>
 }
 ```
@@ -93,7 +106,6 @@ Exhausts a token rendering it useless.
 ```
 Request body:
 {
-  "api_key": <api_key>,
   "auth_token": <auth_token>
 }
 ```
