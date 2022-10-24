@@ -57,6 +57,12 @@ class Responses:
             403,
         )
 
+    def not_exist():
+        return (
+            make_response(jsonify({"status": "fail", "message": "Bad token"})),
+            400,
+        )
+
     def unauthorized():
         return (
             make_response(jsonify({"status": "fail", "message": "Unauthorized"})),
