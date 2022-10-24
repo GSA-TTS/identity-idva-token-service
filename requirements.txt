@@ -1,0 +1,17 @@
+alembic==0.8.9
+cffi
+flask==0.12
+flask-migrate==2.0.2
+flask-script==2.0.5
+flask-sqlalchemy==2.1
+flask-testing==0.6.1
+itsdangerous==0.24
+Jinja2==2.8
+Mako==1.0.6
+MarkupSafe==0.23
+psycopg2
+pycparser==2.17
+six==1.10.0
+sqlalchemy==1.1.4
+Werkzeug==0.11.13
+gunicorn
