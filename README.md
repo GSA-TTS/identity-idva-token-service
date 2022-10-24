@@ -64,7 +64,7 @@ X-API-Key: <api-key>
 #### Token Registering
 Create a new token.
 
-`POST /auth/register`
+`POST /auth`
 
 ```
 Request body:
@@ -77,38 +77,20 @@ Request body:
 #### Token Validating
 Validates a token without changing its properties.
 
-`POST /auth/validate`
+`GET /auth/<token>`
 
-```
-Request body:
-{
-  "auth_token": <auth_token>
-}
-```
 
 #### Token Invoking
 Invokes a token, decrementing its uses by 1.
 
-`POST /auth/invoke`
+`POST /auth/<token>/decrement`
 
-```
-Request body:
-{
-  "auth_token": <auth_token>
-}
-```
 
 #### Token Exhausting
 Exhausts a token rendering it useless.
 
-`POST /auth/exhaust`
+`DELETE /auth/<token>`
 
-```
-Request body:
-{
-  "auth_token": <auth_token>
-}
-```
 
 ### Deploying to Cloud.gov during development
 All deployments require having the correct Cloud.gov credentials in place. If
