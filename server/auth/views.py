@@ -26,7 +26,17 @@ def unauthorized():
     return make_response(jsonify({"message": "Unauthorized access"}), 403)
 
 
-@auth_blueprint.route("/register", methods=["POST"])
+"""
+
+/auth/register -> POST /auth
+/auth/validate -> GET /auth/{token}
+/auth/exhaust -> DELETE /auth/{token}
+/auth/invoke -> POST /auth/{token}/decrement/
+
+"""
+
+
+@auth_blueprint.route("", methods=["POST"])
 @req_auth.login_required
 def register():
     """
@@ -62,15 +72,15 @@ def register():
         return Responses.error()
 
 
-@auth_blueprint.route("/validate", methods=["POST"])
+@auth_blueprint.route("/<token_param>", methods=["GET"])
 @req_auth.login_required
-def validate():
+def validate(token_param):
     """
     Token validation route
     """
-    post_data = request.get_json()
+    # post_data = request.get_json()
     try:
-        token = Token.query.filter_by(id=post_data.get("auth_token")).first()
+        token = Token.query.filter_by(id=token_param).first()
         # check if token exists
         if token:
             # check if token is expired
@@ -78,19 +88,20 @@ def validate():
                 return Responses.expired()
             else:
                 return Responses.exist()
-    except Exception:
+        else:
+            return Responses.not_exist()
+    except:
         return Responses.unauthorized()
 
 
-@auth_blueprint.route("/invoke", methods=["POST"])
+@auth_blueprint.route("/<token_param>/decrement", methods=["POST"])
 @req_auth.login_required
-def invoke():
+def invoke(token_param):
     """
     Token invocation route
     """
-    post_data = request.get_json()
     try:
-        token = Token.query.filter_by(id=post_data.get("auth_token")).first()
+        token = Token.query.filter_by(id=token_param).first()
         # check if token exists
         if token:
             # check if token is expired
@@ -114,14 +125,13 @@ def invoke():
         return Responses.unauthorized()
 
 
-@auth_blueprint.route("/exhaust", methods=["POST"])
-def exhaust():
+@auth_blueprint.route("/<token_param>", methods=["DELETE"])
+def exhaust(token_param):
     """
     Token exhaustion route
     """
-    post_data = request.get_json()
     try:
-        token = Token.query.filter_by(id=post_data.get("auth_token")).first()
+        token = Token.query.filter_by(id=token_param).first()
         # check if token exists
         if token:
             # check if token is expired
