@@ -8,7 +8,7 @@ flask-testing==0.6.1
 flask_httpauth
 itsdangerous==0.24
 Jinja2==2.8
-Mako==1.0.6
+Mako==1.2.2
 MarkupSafe==0.23
 psycopg2
 pycparser==2.17
