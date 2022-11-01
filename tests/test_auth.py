@@ -194,6 +194,18 @@ class TestAuthBlueprint(BaseTestCase):
             self.assertTrue(response.content_type == "application/json")
             self.assertEqual(response.status_code, 200)
 
+            response = self.client.delete(
+                "/auth/" + auth_token,
+                headers={"X-API-Key": config["SECRET_KEY"]},
+                content_type="application/json",
+            )
+
+            data = json.loads(response.data)
+            self.assertEquals(data["status"], "fail")
+            self.assertEquals(data["message"], "Bad token")
+            self.assertTrue(response.content_type == "application/json")
+            self.assertEqual(response.status_code, 400)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -120,7 +120,8 @@ def invoke(token_param):
                     token.refresh = token.refresh - 1
                     db.session.commit()
                     return Responses.refresh()
-
+        else:
+            return Responses.not_exist()
     except Exception:
         return Responses.unauthorized()
 
@@ -138,6 +139,10 @@ def exhaust(token_param):
             if token.is_expired():
                 return Responses.expired()
             else:
+                db.session.delete(token)
+                db.session.commit()
                 return Responses.exhaust()
+        else:
+            return Responses.not_exist()
     except Exception:
         return Responses.unauthorized()
