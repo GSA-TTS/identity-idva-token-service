@@ -15,7 +15,7 @@ on:
 
 jobs:
   unit-test:
-    uses: 18F/identity-idva-gpo/.github/workflows/unit-tests.yaml@main
+    uses: 18F/identity-idva-token-service/.github/workflows/unit-tests.yaml@main
 
   deploy:
     if: github.repository_owner == '18F'
