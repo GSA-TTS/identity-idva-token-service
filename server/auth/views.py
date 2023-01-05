@@ -1,6 +1,4 @@
 # server/auth/views.py
-
-from crypt import methods
 from flask import Blueprint, request, make_response, jsonify
 from flask_httpauth import HTTPTokenAuth
 from server import db, config
@@ -68,7 +66,6 @@ def register():
         }
         return make_response(jsonify(responseObject)), 201
     except Exception as e:
-        print(e)
         return Responses.error()
 
 

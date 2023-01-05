@@ -14,8 +14,9 @@ app.config.from_object(app_settings)
 config = app.config
 
 db = SQLAlchemy(app)
-db.create_all()
 
 from server.auth.views import auth_blueprint
 
 app.register_blueprint(auth_blueprint, url_prefix="/auth")
+
+db.create_all()
