@@ -5,7 +5,6 @@ import unittest
 import json
 
 from server import db, config
-from server.models import Token
 from tests.base import BaseTestCase
 
 
@@ -17,8 +16,8 @@ class TestAuthBlueprint(BaseTestCase):
                 "/auth", headers={"X_API_KEY": config["SECRET_KEY"]}
             )
             data = json.loads(response.data)
-            self.assertEquals(data["status"], "success")
-            self.assertEquals(data["message"], "Successfully registered.")
+            self.assertEqual(data["status"], "success")
+            self.assertEqual(data["message"], "Successfully registered.")
             self.assertTrue(data["auth_token"])
             self.assertTrue(response.content_type == "application/json")
             self.assertEqual(response.status_code, 201)
@@ -32,8 +31,8 @@ class TestAuthBlueprint(BaseTestCase):
             data = json.loads(response.data)
             auth_token = data["auth_token"]
 
-            self.assertEquals(data["status"], "success")
-            self.assertEquals(data["message"], "Successfully registered.")
+            self.assertEqual(data["status"], "success")
+            self.assertEqual(data["message"], "Successfully registered.")
             self.assertTrue(auth_token)
             self.assertTrue(response.content_type == "application/json")
             self.assertEqual(response.status_code, 201)
@@ -76,8 +75,8 @@ class TestAuthBlueprint(BaseTestCase):
             data = json.loads(response.data)
             auth_token = data["auth_token"]
 
-            self.assertEquals(data["status"], "success")
-            self.assertEquals(data["message"], "Successfully registered.")
+            self.assertEqual(data["status"], "success")
+            self.assertEqual(data["message"], "Successfully registered.")
             self.assertTrue(auth_token)
             self.assertTrue(response.content_type == "application/json")
             self.assertEqual(response.status_code, 201)
@@ -107,8 +106,8 @@ class TestAuthBlueprint(BaseTestCase):
             data = json.loads(response.data)
             auth_token = data["auth_token"]
 
-            self.assertEquals(data["status"], "success")
-            self.assertEquals(data["message"], "Successfully registered.")
+            self.assertEqual(data["status"], "success")
+            self.assertEqual(data["message"], "Successfully registered.")
             self.assertTrue(auth_token)
             self.assertTrue(response.content_type == "application/json")
             self.assertEqual(response.status_code, 201)
@@ -140,8 +139,8 @@ class TestAuthBlueprint(BaseTestCase):
             data = json.loads(response.data)
             auth_token = data["auth_token"]
 
-            self.assertEquals(data["status"], "success")
-            self.assertEquals(data["message"], "Successfully registered.")
+            self.assertEqual(data["status"], "success")
+            self.assertEqual(data["message"], "Successfully registered.")
             self.assertTrue(auth_token)
             self.assertTrue(response.content_type == "application/json")
             self.assertEqual(response.status_code, 201)
@@ -159,8 +158,8 @@ class TestAuthBlueprint(BaseTestCase):
                 content_type="application/json",
             )
             data = json.loads(response.data)
-            self.assertEquals(data["status"], "fail")
-            self.assertEquals(data["message"], "Token exhausted")
+            self.assertEqual(data["status"], "fail")
+            self.assertEqual(data["message"], "Token exhausted")
             self.assertTrue(response.content_type == "application/json")
             self.assertEqual(response.status_code, 403)
 
@@ -176,8 +175,8 @@ class TestAuthBlueprint(BaseTestCase):
             data = json.loads(response.data)
             auth_token = data["auth_token"]
 
-            self.assertEquals(data["status"], "success")
-            self.assertEquals(data["message"], "Successfully registered.")
+            self.assertEqual(data["status"], "success")
+            self.assertEqual(data["message"], "Successfully registered.")
             self.assertTrue(auth_token)
             self.assertTrue(response.content_type == "application/json")
             self.assertEqual(response.status_code, 201)
@@ -189,8 +188,8 @@ class TestAuthBlueprint(BaseTestCase):
                 content_type="application/json",
             )
             data = json.loads(response.data)
-            self.assertEquals(data["status"], "success")
-            self.assertEquals(data["message"], "Token successfully exhausted")
+            self.assertEqual(data["status"], "success")
+            self.assertEqual(data["message"], "Token successfully exhausted")
             self.assertTrue(response.content_type == "application/json")
             self.assertEqual(response.status_code, 200)
 
@@ -201,8 +200,8 @@ class TestAuthBlueprint(BaseTestCase):
             )
 
             data = json.loads(response.data)
-            self.assertEquals(data["status"], "fail")
-            self.assertEquals(data["message"], "Bad token")
+            self.assertEqual(data["status"], "fail")
+            self.assertEqual(data["message"], "Bad token")
             self.assertTrue(response.content_type == "application/json")
             self.assertEqual(response.status_code, 400)
 
