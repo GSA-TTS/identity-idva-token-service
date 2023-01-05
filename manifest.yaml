@@ -1,6 +1,9 @@
 ---
 applications:
   - name: token
+    routes:
+      - route: identity-idva-token-service-((ENVIRONMENT_NAME)).apps.internal
+      - route: identity-idva-token-service-((ENVIRONMENT_NAME)).app.cloud.gov
     memory: ((MEMORY))
     instances: ((INSTANCES))
     buildpacks:
