@@ -32,6 +32,6 @@ jobs:
 
       - name: Deploy application
         run: cf push --vars-file vars.yaml
-          --var ENVIRONMENT=${{ steps.cf-setup.outputs.target-environment }}
+          --var ENVIRONMENT_NAME=${{ steps.cf-setup.outputs.target-environment }}
           --var SECRET_KEY=${{ secrets.SECRET_KEY }}
           --strategy rolling
