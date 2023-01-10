@@ -1,22 +1,20 @@
-# server/__init__.py
-
 import os
-
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-app_settings = os.getenv("APP_SETTINGS", "server.config.LocalDevConfig")
+app_settings = os.getenv("APP_SETTINGS")
 
 app.config.from_object(app_settings)
 
 config = app.config
-
 db = SQLAlchemy(app)
 
-from server.auth.views import auth_blueprint
+from auth.api import auth_blueprint
 
 app.register_blueprint(auth_blueprint, url_prefix="/auth")
 
-db.create_all()
+with app.app_context():
+    db.drop_all()
+    db.create_all()

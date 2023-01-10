@@ -3,14 +3,14 @@
 
 from flask_testing import TestCase
 
-from server import app, db
+from auth.main import app, db
 
 
 class BaseTestCase(TestCase):
     """Base Tests"""
 
     def create_app(self):
-        app.config.from_object("server.config.LocalDevConfig")
+        app.config.from_object("tests.config.TestConfig")
         return app
 
     def setUp(self):

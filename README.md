@@ -8,7 +8,7 @@ Tokens are at default valid for 7 days and have 1 use. Time and uses can be adju
 
 ### Pre-requisites
 Make sure you have the following installed if you intend to build the project locally.
-- [Python 3](https://www.python.org/) (Check [runtime.txt](runtime.txt) for exact version)
+- [Python 3.10](https://www.python.org/) (Check [runtime.txt](runtime.txt) for exact version)
 - [CloudFoundry CLI](https://docs.cloudfoundry.org/cf-cli/)
 
 ### Development Setup
@@ -20,7 +20,7 @@ git clone https://github.com/18F/identity-idva-token-service
 cd identity-idva-token-service
 
 # Set up Python virtual environment
-python3.9 -m venv .venv
+python3.10 -m venv .venv
 source .venv/bin/activate
 # .venv\Scripts\Activate.ps1 on Windows
 

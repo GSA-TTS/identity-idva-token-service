@@ -7,9 +7,6 @@ import logging
 log = logging.getLogger(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-DB_USER = os.getenv("DB_USER")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-
 
 class BaseConfig:
     """Base configuration."""
@@ -18,18 +15,7 @@ class BaseConfig:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
-class LocalDevConfig(BaseConfig):
-    """Development configuration for local deployments."""
-
-    DEFAULT_SECONDS = 10
-    DEFAULT_USES = 1
-
-    SECRET_KEY = os.getenv("SECRET_KEY", "this_is_a_secret")
-    DEBUG = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///mydb.sqlite"
-
-
-class CloudDevConfig(BaseConfig):
+class ProdConfig(BaseConfig):
     """Development configuration for cloud foundry deployments."""
 
     DEFAULT_SECONDS = 604800  # 7 days

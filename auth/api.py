@@ -1,11 +1,9 @@
 # server/auth/views.py
 from flask import Blueprint, request, make_response, jsonify
 from flask_httpauth import HTTPTokenAuth
-from server import db, config
-from server.models import Token
-from server.auth.responses import Responses
-
-import server.config as config
+from auth.main import db, config
+from auth.models import Token
+from auth.responses import Responses
 
 auth_blueprint = Blueprint("auth", __name__)
 req_auth = HTTPTokenAuth(header="X-API-Key")
@@ -40,18 +38,21 @@ def register():
     """
     Token registration route
     """
+    seconds = config["DEFAULT_SECONDS"]
+    uses = config["DEFAULT_USES"]
+
     # get the post data
-    post_data = request.get_json()
+    if (
+        "Content-Type" in request.headers
+        and request.headers["Content-Type"] == "application/json"
+    ):
+        post_data = request.get_json()
+        if post_data.get("seconds"):
+            seconds = post_data.get("seconds")
+        if post_data.get("uses"):
+            uses = post_data.get("uses")
+
     try:
-        seconds = config["DEFAULT_SECONDS"]
-        uses = config["DEFAULT_USES"]
-
-        if post_data:
-            if post_data.get("seconds"):
-                seconds = post_data.get("seconds")
-            if post_data.get("uses"):
-                uses = post_data.get("uses")
-
         token = Token(seconds, uses)
 
         # insert the user
@@ -66,6 +67,7 @@ def register():
         }
         return make_response(jsonify(responseObject)), 201
     except Exception as e:
+        print(e)
         return Responses.error()
 
 

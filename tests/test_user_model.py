@@ -3,8 +3,8 @@
 import unittest
 from uuid import UUID
 
-from server import db, config
-from server.models import Token
+from auth.main import db, config
+from auth.models import Token
 from tests.base import BaseTestCase
 
 

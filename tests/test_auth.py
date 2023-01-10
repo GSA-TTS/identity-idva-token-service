@@ -4,8 +4,8 @@ from time import sleep
 import unittest
 import json
 
-from server import db, config
 from tests.base import BaseTestCase
+from auth.main import config
 
 
 class TestAuthBlueprint(BaseTestCase):
@@ -13,8 +13,11 @@ class TestAuthBlueprint(BaseTestCase):
         """Test for token registration"""
         with self.client:
             response = self.client.post(
-                "/auth", headers={"X_API_KEY": config["SECRET_KEY"]}
+                "/auth",
+                headers={"X_API_KEY": config["SECRET_KEY"]},
             )
+            print("Response:")
+            print(response.data)
             data = json.loads(response.data)
             self.assertEqual(data["status"], "success")
             self.assertEqual(data["message"], "Successfully registered.")
