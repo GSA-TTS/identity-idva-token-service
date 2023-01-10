@@ -11,7 +11,7 @@ class TestConfig(BaseConfig):
     DB_PASSWORD = os.getenv("DB_PASSWORD")
 
     postgres_local_base = f"postgresql://{DB_USER}:{DB_PASSWORD}@localhost/"
-    local_database_name = "idva_token_test"
+    local_database_name = "idva_token"
 
     SECRET_KEY = os.getenv("SECRET_KEY", "this_is_a_secret")
     DEBUG = True
