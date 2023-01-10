@@ -42,6 +42,6 @@ jobs:
       - name: Test with Pytest unit tests
         run: python -m pytest
         env:
-          APP_SETTINGS: auth.config.TestConfig
+          APP_SETTINGS: tests.config.TestConfig
           DB_USER: testuser
           DB_PASSWORD: password
