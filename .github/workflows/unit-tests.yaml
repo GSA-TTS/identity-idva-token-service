@@ -42,10 +42,6 @@ jobs:
       - name: Test with Pytest unit tests
         run: python -m pytest
         env:
-<<<<<<< HEAD
           APP_SETTINGS: tests.config.TestConfig
-=======
-          APP_SETTINGS: auth.config.TestConfig
->>>>>>> 741b817... Fix env variable setting
           DB_USER: testuser
           DB_PASSWORD: password
