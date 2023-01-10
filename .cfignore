@@ -1,5 +1,4 @@
 *.md
-*.sqlite
 .venv/
 .github
 .pre-commit-config.yaml
