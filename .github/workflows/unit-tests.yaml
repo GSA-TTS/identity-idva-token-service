@@ -41,7 +41,7 @@ jobs:
           sudo -u postgres createdb idva_token_test --owner=testuser
       - name: Test with Pytest unit tests
         run: python -m pytest
-        with:
+        env:
           APP_SETTINGS: auth.config.TestConfig
           DB_USER: testuser
           DB_PASSWORD: password
