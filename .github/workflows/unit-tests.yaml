@@ -40,8 +40,8 @@ jobs:
           sudo -u postgres psql --command="CREATE USER testuser PASSWORD 'password'" --command="\du"
           sudo -u postgres createdb idva_token_test --owner=testuser
       - name: Test with Pytest unit tests
-        run: |
-          export APP_SETTINGS="server.config.LocalDevConfig"
-          export DB_USER: testuser
-          export DB_PASSWORD: password
-          python -m pytest
+        run: python -m pytest
+        with:
+          APP_SETTINGS: auth.config.TestConfig
+          DB_USER: testuser
+          DB_PASSWORD: password
