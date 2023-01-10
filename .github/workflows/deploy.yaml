@@ -18,7 +18,6 @@ jobs:
     uses: 18f/identity-idva-token-service/.github/workflows/unit-tests.yaml@main
 
   deploy:
-    if: github.repository_owner == '18F'
     needs: unit-test
     runs-on: ubuntu-latest
     steps:
