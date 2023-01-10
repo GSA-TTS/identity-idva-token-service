@@ -28,6 +28,16 @@ source .venv/bin/activate
 python -m pip install -r requirements.txt
 pre-commit install
 
+```
+Install [PostgreSQL](https://www.postgresql.org/).
+
+Set up a local database:
+```shell
+psql
+create database idva_token;
+# \q
+```
+
 To set a custom secret key, use the following environment variable: `SECRET_KEY`.
 
 The project can be ran locally with:
