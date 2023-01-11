@@ -3,3 +3,7 @@ pre-commit
 black
 pylint
 bandit
+pytest
+tzdata
+requests
+flask_testing

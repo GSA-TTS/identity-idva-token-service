@@ -1,10 +1,7 @@
-# server/models.py
-
 import datetime
 import uuid
-
 from sqlalchemy.dialects.postgresql import UUID
-from server import db
+from auth.main import db
 
 
 class Token(db.Model):
@@ -12,7 +9,9 @@ class Token(db.Model):
 
     __tablename__ = "tokens"
 
-    id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid1)
+    id = db.Column(
+        UUID(as_uuid=True), primary_key=True, default=lambda: uuid.uuid1().hex
+    )
     registered_on = db.Column(db.DateTime, nullable=False)
     expires_on = db.Column(db.DateTime, nullable=False)
     refresh = db.Column(db.Integer, nullable=False)

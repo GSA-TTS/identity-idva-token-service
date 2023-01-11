@@ -1,15 +1,18 @@
 ---
 applications:
   - name: token
+    routes:
+      - route: identity-idva-token-service-((ENVIRONMENT_NAME)).apps.internal
+      - route: identity-idva-token-service-((ENVIRONMENT_NAME)).app.cloud.gov
     memory: ((MEMORY))
     instances: ((INSTANCES))
     buildpacks:
       - python_buildpack
-    command: gunicorn server:app --bind 0.0.0.0:8080
+    command: gunicorn auth.main:app --bind 0.0.0.0:8080
     services:
       - tokendb
     env:
-      APP_SETTINGS: "server.config.CloudDevConfig"
+      APP_SETTINGS: "auth.config.ProdConfig"
       DB_USER: "nothing"
       DB_PASSWORD: "nothing"
       SECRET_KEY: ((SECRET_KEY))
