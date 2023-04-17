@@ -28,7 +28,6 @@ jobs:
         with:
           target-environment: ${{ steps.cf-setup.outputs.target-environment }}
           require-postgres: "true"
-          app-directory: "token_service"
 
       - name: Deploy application
         run: cf push --vars-file vars.yaml
