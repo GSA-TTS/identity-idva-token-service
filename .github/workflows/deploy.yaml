@@ -4,22 +4,17 @@
 
 name: Deploy
 
-on:
-  push:
-    branches:
-      - main
-    tags:
-      - "*"
-    paths-ignore:
-      - "**.md" # All markdown files in the repository
+on: push
 
 jobs:
   unit-test:
     uses: GSA-TTS/identity-idva-token-service/.github/workflows/unit-tests.yaml@main
-
+  setup-db:
+    uses: shumatepf/identity-idva-cf-setup/service-setup/action.yml@feature/cf-service-action
+    with:
+      require-postgres: "true"
   deploy:
-    if: github.repository_owner == 'GSA-TTS'
-    needs: unit-test
+    needs: [unit-test, setup-db]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
