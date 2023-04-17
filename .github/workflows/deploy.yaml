@@ -23,7 +23,7 @@ jobs:
           cf-org: ${{ secrets.CF_ORG }}
 
       - name: Setup database
-        uses: shumatepf/identity-idva-cf-setup/service-setup@v2.2.1
+        uses: shumatepf/identity-idva-cf-setup/service-setup@v2.2.2
         with:
           target-environment: ${{ steps.cf-setup.outputs.target-environment }}
           require-postgres: "true"
