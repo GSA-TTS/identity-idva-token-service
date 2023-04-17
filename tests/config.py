@@ -1,4 +1,4 @@
-from auth.config import BaseConfig
+from token_service.config import BaseConfig
 
 import os
 

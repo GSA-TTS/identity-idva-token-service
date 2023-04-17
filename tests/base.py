@@ -3,7 +3,7 @@
 
 from flask_testing import TestCase
 
-from auth.main import app, db
+from token_service.main import app, db
 
 
 class BaseTestCase(TestCase):
