@@ -1,9 +1,9 @@
 # server/auth/views.py
 from flask import Blueprint, request, make_response, jsonify
 from flask_httpauth import HTTPTokenAuth
-from token_service.main import db, config
-from token_service.models import Token
-from token_service.responses import Responses
+from auth.main import db, config
+from auth.models import Token
+from auth.responses import Responses
 
 auth_blueprint = Blueprint("auth", __name__)
 req_auth = HTTPTokenAuth(header="X-API-Key")

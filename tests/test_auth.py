@@ -5,7 +5,7 @@ import unittest
 import json
 
 from tests.base import BaseTestCase
-from token_service.main import config
+from auth.main import config
 
 
 class TestAuthBlueprint(BaseTestCase):

@@ -3,8 +3,8 @@
 import unittest
 from uuid import UUID
 
-from token_service.main import db, config
-from token_service.models import Token
+from auth.main import db, config
+from auth.models import Token
 from tests.base import BaseTestCase
 
 

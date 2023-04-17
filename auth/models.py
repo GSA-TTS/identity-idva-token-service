@@ -1,7 +1,7 @@
 import datetime
 import uuid
 from sqlalchemy.dialects.postgresql import UUID
-from token_service.main import db
+from auth.main import db
 
 
 class Token(db.Model):
