@@ -1,6 +1,6 @@
 {
     "db": {
-        "name": "token-db",
+        "name": "tokendb",
         "service": "aws-rds",
         "plan": {
             "dev": "micro-psql",
