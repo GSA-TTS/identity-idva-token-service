@@ -15,8 +15,7 @@ on:
 
 jobs:
   unit-test:
-    uses: GSA-TTS/identity-idva-token-service/.github/workflows/unit-tests.yaml@main
-
+    uses: GSA-TTS/identity-idva-token-service/.github/workflows/unit-tests.yaml@main  
   deploy:
     if: github.repository_owner == 'GSA-TTS'
     needs: unit-test
@@ -30,6 +29,13 @@ jobs:
           cf-username: ${{ secrets.CF_USERNAME }}
           cf-password: ${{ secrets.CF_PASSWORD }}
           cf-org: ${{ secrets.CF_ORG }}
+
+      - name: Setup database
+        uses: GSA-TTS/identity-idva-cf-setup/service-setup@v2
+        with:
+          target-environment: ${{ steps.cf-setup.outputs.target-environment }}
+          require-postgres: "true"
+          create-required-services: "true"
 
       - name: Deploy application
         run: cf push --vars-file vars.yaml
