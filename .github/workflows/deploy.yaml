@@ -31,7 +31,7 @@ jobs:
           cf-org: ${{ secrets.CF_ORG }}
 
       - name: Setup database
-        uses: GSA-TTS/identity-idva-cf-setup/service-setup@v2.3.0
+        uses: GSA-TTS/identity-idva-cf-setup/service-setup@v3
         with:
           target-environment: ${{ steps.cf-setup.outputs.target-environment }}
           require-postgres: "true"
