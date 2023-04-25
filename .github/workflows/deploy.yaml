@@ -37,8 +37,21 @@ jobs:
           require-postgres: "true"
           create-required-services: "true"
 
+      - name: Get Env Secrets
+        run: |
+          GUID="$(cf service token-service-secret --guid)"
+          CREDS="$(cf curl "/v3/service_instances/$GUID/credentials")"
+          SECRET_KEY=$(echo "$CREDS" | jq -r '.key // empty')
+
+          if [[-z "$SECRET_KEY"]]; then
+            echo Error: Missing SECRET_KEY
+            exit 1
+          fi
+          
+          echo "SECRET_KEY=$SECRET_KEY" >> "$GITHUB_ENV"
+
       - name: Deploy application
         run: cf push --vars-file vars.yaml
           --var ENVIRONMENT_NAME=${{ steps.cf-setup.outputs.target-environment }}
-          --var SECRET_KEY=${{ secrets.SECRET_KEY }}
+          --var SECRET_KEY=${{ env.SECRET_KEY }}
           --strategy rolling
