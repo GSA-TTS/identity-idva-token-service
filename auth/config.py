@@ -21,11 +21,20 @@ class ProdConfig(BaseConfig):
     DEFAULT_SECONDS = 604800  # 7 days
     DEFAULT_USES = 1
 
-    SECRET_KEY = os.getenv("SECRET_KEY")
+    SECRET_KEY = None
 
     vcap_services = os.getenv("VCAP_SERVICES", "")
+
     try:
-        db_uri = json.loads(vcap_services)["aws-rds"][0]["credentials"]["uri"]
+        services = json.loads(vcap_services)
+        for service in services["user-provided"]:
+            if service["name"] == "token-service-secret":
+                log.info("Loading secret key from user service")
+                SECRET_KEY = service["credentials"]["key"]
+                break
+        if SECRET_KEY == None:
+            log.error("Unable to load secret key from user service")
+        db_uri = services["aws-rds"][0]["credentials"]["uri"]
     except (json.JSONDecodeError, KeyError) as err:
         log.warning("Unable to load db_uri from VCAP_SERVICES")
         log.debug("Error: %s", str(err))
