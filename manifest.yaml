@@ -11,8 +11,8 @@ applications:
     command: gunicorn auth.main:app --bind 0.0.0.0:8080
     services:
       - tokendb
+      - token-service-secret
     env:
       APP_SETTINGS: "auth.config.ProdConfig"
       DB_USER: "nothing"
       DB_PASSWORD: "nothing"
-      SECRET_KEY: ((SECRET_KEY))
