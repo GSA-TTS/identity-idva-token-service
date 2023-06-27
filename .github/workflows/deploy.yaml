@@ -43,3 +43,5 @@ jobs:
         run: cf push --vars-file vars.yaml
           --var ENVIRONMENT_NAME=${{ steps.cf-setup.outputs.target-environment }}
           --strategy rolling
+      - name: Add network policies
+        run: cf add-network-policy token gdrive --protocol tcp --port 8080

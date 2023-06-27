@@ -1,4 +1,6 @@
 # server/auth/views.py
+import requests
+
 from flask import Blueprint, request, make_response, jsonify
 from flask_httpauth import HTTPTokenAuth
 from auth.main import db, config
@@ -6,6 +8,8 @@ from auth.models import Token
 from auth.responses import Responses
 
 auth_blueprint = Blueprint("auth", __name__)
+gdrive_blueprint = Blueprint("gdrive", __name__)
+
 req_auth = HTTPTokenAuth(header="X-API-Key")
 
 
@@ -145,3 +149,15 @@ def exhaust(token_param):
             return Responses.not_exist()
     except Exception:
         return Responses.unauthorized()
+
+
+@gdrive_blueprint.route("/export/<response_id>", methods=["POST"])
+def export(response_id):
+    if response_id:
+        requests.post(
+            f"http://{config['GDRIVE_APP_HOST']}:{config['GDRIVE_APP_PORT']}/response/{response_id}",
+            timeout=5,
+        )
+    else:
+        return "Bad Response ID", 400
+    return "Response ID successfully posted", 200
