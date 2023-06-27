@@ -2,6 +2,7 @@
 import requests
 
 from flask import Blueprint, request, make_response, jsonify
+from pydantic import BaseModel
 from flask_httpauth import HTTPTokenAuth
 from auth.main import db, config
 from auth.models import Token
@@ -151,13 +152,23 @@ def exhaust(token_param):
         return Responses.unauthorized()
 
 
-@gdrive_blueprint.route("/export/<response_id>", methods=["POST"])
-def export(response_id):
-    if response_id:
-        requests.post(
-            f"http://{config['GDRIVE_APP_HOST']}:{config['GDRIVE_APP_PORT']}/response/{response_id}",
-            timeout=5,
-        )
-    else:
-        return "Bad Response ID", 400
+class SurveyResponseModel(BaseModel):
+    """
+    Request body format for the `/export` endpoint
+    """
+
+    surveyId: str
+    responseId: str
+
+
+@gdrive_blueprint.route("/export", methods=["POST"])
+def export(request: SurveyResponseModel):
+    """
+    GDrive microservice interface
+    """
+    requests.post(
+        f"http://{config['GDRIVE_APP_HOST']}:{config['GDRIVE_APP_PORT']}/survey-export",
+        json={"surveyId": request.surveyId, "responseId": request.responseId},
+        timeout=5,
+    )
     return "Response ID successfully posted", 200
