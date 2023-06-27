@@ -153,8 +153,11 @@ def exhaust(token_param):
 
 @gdrive_blueprint.route("/export/<response_id>", methods=["POST"])
 def export(response_id):
-    r = requests.post(
-        f"http://{config['GDRIVE_APP_HOST']}:{config['GDRIVE_APP_PORT']}/response/{response_id}",
-        timeout=5,
-    )
-    return r.json()
+    if response_id:
+        requests.post(
+            f"http://{config['GDRIVE_APP_HOST']}:{config['GDRIVE_APP_PORT']}/response/{response_id}",
+            timeout=5,
+        )
+    else:
+        return "Bad Response ID", 400
+    return "Response ID successfully posted", 200
