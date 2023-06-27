@@ -23,6 +23,9 @@ class ProdConfig(BaseConfig):
 
     SECRET_KEY = None
 
+    GDRIVE_APP_HOST = os.getenv("GDRIVE_APP_HOST")
+    GDRIVE_APP_PORT = os.getenv("GDRIVE_APP_PORT")
+
     vcap_services = os.getenv("VCAP_SERVICES", "")
 
     try:

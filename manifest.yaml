@@ -16,3 +16,5 @@ applications:
       APP_SETTINGS: "auth.config.ProdConfig"
       DB_USER: "nothing"
       DB_PASSWORD: "nothing"
+      GDRIVE_APP_HOST: "idva-gdrive-dev.apps.internal"
+      GDRIVE_APP_PORT: 8080
