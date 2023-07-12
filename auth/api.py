@@ -174,6 +174,7 @@ def export(body: SurveyParticipantModel):
     """
     requests.post(
         f"http://{config['GDRIVE_APP_HOST']}:{config['GDRIVE_APP_PORT']}/survey-export",
+        headers={"Content-Type": "application/json"},
         json=body.json(),
         timeout=5,
     )
