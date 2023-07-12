@@ -1,6 +1,5 @@
 # server/auth/views.py
 import requests
-import json
 import flask_pydantic
 
 from flask import Blueprint, request, make_response, jsonify
