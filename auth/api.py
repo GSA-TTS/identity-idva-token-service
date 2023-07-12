@@ -153,25 +153,28 @@ def exhaust(token_param):
         return Responses.unauthorized()
 
 
-class SurveyResponseModel(BaseModel):
+class SurveyParticipantModel(BaseModel):
     """
-    Request body format for the `/export` endpoint
+    Request body format for the `/survey-response` endpoint
     """
 
     surveyId: str
     responseId: str
+    first: str
+    last: str
+    email: str
+    time: str
 
 
 @gdrive_blueprint.route("/survey-response", methods=["POST"])
 @flask_pydantic.validate()
-def export(body: SurveyResponseModel):
+def export(body: SurveyParticipantModel):
     """
     GDrive microservice interface
     """
-
     requests.post(
         f"http://{config['GDRIVE_APP_HOST']}:{config['GDRIVE_APP_PORT']}/survey-export",
-        json={"surveyId": body.surveyId, "responseId": body.responseId},
+        json=body.json(),
         timeout=5,
     )
     return "Response ID successfully posted", 200
