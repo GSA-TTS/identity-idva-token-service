@@ -174,13 +174,9 @@ def export(body: SurveyParticipantModel):
     GDrive microservice interface
     """
 
-    json_body_string = body.json()
-    json_body_dict = json.loads(json_body_string)
-
     requests.post(
         f"http://{config['GDRIVE_APP_HOST']}:{config['GDRIVE_APP_PORT']}/survey-export",
-        headers={"Content-Type": "application/json"},
-        json=json_body_dict,
+        data=body.json(),
         timeout=5,
     )
     return "Response ID successfully posted", 200
