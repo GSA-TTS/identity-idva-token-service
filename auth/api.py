@@ -1,7 +1,7 @@
 # server/auth/views.py
 import requests
-
 import flask_pydantic
+
 from flask import Blueprint, request, make_response, jsonify
 from pydantic import BaseModel
 from flask_httpauth import HTTPTokenAuth
@@ -172,10 +172,10 @@ def export(body: SurveyParticipantModel):
     """
     GDrive microservice interface
     """
+
     requests.post(
         f"http://{config['GDRIVE_APP_HOST']}:{config['GDRIVE_APP_PORT']}/survey-export",
-        headers={"Content-Type": "application/json"},
-        json=body.json(),
+        data=body.json(),
         timeout=5,
     )
     return "Response ID successfully posted", 200
