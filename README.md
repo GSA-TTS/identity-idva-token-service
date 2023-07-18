@@ -69,8 +69,8 @@ Create a new token.
 ```
 Request body:
 {
-  "seconds": <seconds>, //OPTIONAL
-  "uses": <uses> //OPTIONAL
+  "seconds": int, //OPTIONAL
+  "uses": int //OPTIONAL
 }
 ```
 
@@ -91,6 +91,23 @@ Exhausts a token rendering it useless.
 
 `DELETE /auth/<token>`
 
+
+#### Survey Response Export
+Export Qualtrics Survey response on a public endpoint
+
+`POST /export/survey-response`
+
+```
+Request body:
+{
+  "surveyId": str
+  "responseId": str
+  "first": str
+  "last": str
+  "email": str
+  "time": str
+}
+```
 
 ### Deploying to Cloud.gov during development
 All deployments require having the correct Cloud.gov credentials in place. If
