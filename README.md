@@ -93,7 +93,7 @@ Exhausts a token rendering it useless.
 
 
 #### Survey Response Export
-Export Qualtrics Survey response on a public endpoint
+Export Qualtrics Survey response on a public endpoint.
 
 `POST /export/survey-response`
 
