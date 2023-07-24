@@ -8,6 +8,7 @@ from flask_httpauth import HTTPTokenAuth
 from auth.main import db, config
 from auth.models import Token
 from auth.responses import Responses
+from typing import Optional
 
 auth_blueprint = Blueprint("auth", __name__)
 gdrive_blueprint = Blueprint("gdrive", __name__)
@@ -153,6 +154,13 @@ def exhaust(token_param):
         return Responses.unauthorized()
 
 
+class ParticipantModel(BaseModel):
+    first: str
+    last: str
+    email: str
+    time: str
+
+
 class SurveyParticipantModel(BaseModel):
     """
     Request body format for the `/survey-response` endpoint
@@ -160,10 +168,7 @@ class SurveyParticipantModel(BaseModel):
 
     surveyId: str
     responseId: str
-    first: str
-    last: str
-    email: str
-    time: str
+    participant: Optional[ParticipantModel]
 
 
 @gdrive_blueprint.route("/survey-response", methods=["POST"])
@@ -173,9 +178,11 @@ def export(body: SurveyParticipantModel):
     GDrive microservice interface
     """
 
-    requests.post(
-        f"http://{config['GDRIVE_APP_HOST']}:{config['GDRIVE_APP_PORT']}/survey-export",
-        data=body.json(),
-        timeout=5,
-    )
+    print(body.json())
+
+    # requests.post(
+    #     f"http://{config['GDRIVE_APP_HOST']}:{config['GDRIVE_APP_PORT']}/survey-export",
+    #     data=body.json(),
+    #     timeout=5,
+    # )
     return "Response ID successfully posted", 200
