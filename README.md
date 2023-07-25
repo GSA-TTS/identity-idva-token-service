@@ -8,7 +8,7 @@ Tokens are at default valid for 7 days and have 1 use. Time and uses can be adju
 
 ### Pre-requisites
 Make sure you have the following installed if you intend to build the project locally.
-- [Python 3.10](https://www.python.org/) (Check [runtime.txt](runtime.txt) for exact version)
+- [Python 3.11](https://www.python.org/)
 - [CloudFoundry CLI](https://docs.cloudfoundry.org/cf-cli/)
 
 ### Development Setup
@@ -16,16 +16,16 @@ To set up your environment, run the following commands (or the equivalent
 commands if not using a bash-like terminal):
 ```shell
 # Clone the project
-git clone https://github.com/18F/identity-idva-token-service
+git clone https://github.com/GSA-TTS/identity-idva-token-service
 cd identity-idva-token-service
 
 # Set up Python virtual environment
-python3.10 -m venv .venv
+python3.11 -m venv .venv
 source .venv/bin/activate
 # .venv\Scripts\Activate.ps1 on Windows
 
 # Install dependencies and pre-commit hooks
-python -m pip install -r requirements.txt
+python -m pip install -r requirements-dev.txt
 pre-commit install
 
 ```
@@ -102,10 +102,12 @@ Request body:
 {
   "surveyId": str
   "responseId": str
-  "first": str
-  "last": str
-  "email": str
-  "time": str
+  "participant": {
+    "first": str
+    "last": str
+    "email": str
+    "time": str
+  }
 }
 ```
 
