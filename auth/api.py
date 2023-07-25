@@ -168,7 +168,7 @@ class SurveyParticipantModel(BaseModel):
 
     surveyId: str
     responseId: str
-    participant: Optional[ParticipantModel]
+    participant: Optional[ParticipantModel] = None
 
 
 @gdrive_blueprint.route("/survey-response", methods=["POST"])
