@@ -159,6 +159,7 @@ class ParticipantModel(BaseModel):
     last: str
     email: str
     time: str
+    date: str
 
 
 class SurveyParticipantModel(BaseModel):
