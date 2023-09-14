@@ -78,6 +78,23 @@ def register():
         return Responses.error()
 
 
+@auth_blueprint.route("/state", methods=["GET"])
+@req_auth.login_required
+def state():
+    """
+    Token state
+    """
+    token_param = request.args.get("token", "")
+    try:
+        token = Token.query.filter_by(id=token_param).first()
+        # check if token exists
+        if token:
+            return Responses.state(token.state)
+        return Responses.not_exist()
+    except:
+        return Responses.unauthorized()
+
+
 @auth_blueprint.route("/<token_param>", methods=["GET"])
 @req_auth.login_required
 def validate(token_param):
@@ -89,6 +106,8 @@ def validate(token_param):
         token = Token.query.filter_by(id=token_param).first()
         # check if token exists
         if token:
+            if token.exhausted:
+                return Responses.exhausted(token.state)
             # check if token is expired
             if token.is_expired():
                 return Responses.expired()
@@ -110,6 +129,8 @@ def invoke(token_param):
         token = Token.query.filter_by(id=token_param).first()
         # check if token exists
         if token:
+            if token.exhausted:
+                return Responses.exhausted(token.state)
             # check if token is expired
             if token.is_expired():
                 return Responses.expired()
@@ -117,9 +138,9 @@ def invoke(token_param):
                 # check if token is has anymore use
                 # if token refresh value is 0 (exhausted)
                 if token.refresh < 1:
-                    db.session.delete(token)
+                    token.exhausted = True
                     db.session.commit()
-                    return Responses.exhausted()
+                    return Responses.exhausted(token.state)
                 else:
                     # decrement from the refresh count
                     # maybe delete if it's now 0?
@@ -133,6 +154,7 @@ def invoke(token_param):
 
 
 @auth_blueprint.route("/<token_param>", methods=["DELETE"])
+@req_auth.login_required
 def exhaust(token_param):
     """
     Token exhaustion route
@@ -141,11 +163,15 @@ def exhaust(token_param):
         token = Token.query.filter_by(id=token_param).first()
         # check if token exists
         if token:
+            if token.exhausted:
+                return Responses.exhausted(token.state)
             # check if token is expired
-            if token.is_expired():
+            elif token.is_expired():
                 return Responses.expired()
             else:
-                db.session.delete(token)
+                token.exhausted = True
+                state = request.args.get("state", "")
+                token.state = state
                 db.session.commit()
                 return Responses.exhaust()
         else:
@@ -174,6 +200,7 @@ class SurveyParticipantModel(BaseModel):
 
 @gdrive_blueprint.route("/survey-response", methods=["POST"])
 @flask_pydantic.validate()
+@req_auth.login_required
 def export(body: SurveyParticipantModel):
     """
     GDrive microservice interface

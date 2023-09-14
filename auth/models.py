@@ -15,6 +15,8 @@ class Token(db.Model):
     registered_on = db.Column(db.DateTime, nullable=False)
     expires_on = db.Column(db.DateTime, nullable=False)
     refresh = db.Column(db.Integer, nullable=False)
+    state = db.Column(db.String, nullable=False, default="init")
+    exhausted = db.Column(db.Boolean, nullable=False, default=False)
 
     def __init__(self, seconds, uses):
         self.registered_on = datetime.datetime.now()
