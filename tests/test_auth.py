@@ -204,9 +204,9 @@ class TestAuthBlueprint(BaseTestCase):
 
             data = json.loads(response.data)
             self.assertEqual(data["status"], "fail")
-            self.assertEqual(data["message"], "Bad token")
+            self.assertEqual(data["message"], "Token exhausted")
             self.assertTrue(response.content_type == "application/json")
-            self.assertEqual(response.status_code, 400)
+            self.assertEqual(response.status_code, 403)
 
 
 if __name__ == "__main__":

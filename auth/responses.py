@@ -51,10 +51,20 @@ class Responses:
             403,
         )
 
-    def exhausted():
+    def exhausted(state: str):
         return (
-            make_response(jsonify({"status": "fail", "message": "Token exhausted"})),
+            make_response(
+                jsonify(
+                    {"status": "fail", "message": "Token exhausted", "state": state}
+                )
+            ),
             403,
+        )
+
+    def state(state: str):
+        return (
+            make_response(jsonify({"status": "ok", "state": state})),
+            200,
         )
 
     def not_exist():
