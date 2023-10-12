@@ -15,7 +15,3 @@ from auth.api import auth_blueprint, gdrive_blueprint
 
 app.register_blueprint(auth_blueprint, url_prefix="/auth")
 app.register_blueprint(gdrive_blueprint, url_prefix="/export")
-
-with app.app_context():
-    db.drop_all()
-    db.create_all()
