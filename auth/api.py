@@ -180,14 +180,6 @@ def exhaust(token_param):
         return Responses.unauthorized()
 
 
-class ParticipantModel(BaseModel):
-    first: str
-    last: str
-    email: str
-    time: str
-    date: str
-
-
 class SurveyParticipantModel(BaseModel):
     """
     Request body format for the `/survey-response` endpoint
@@ -195,7 +187,7 @@ class SurveyParticipantModel(BaseModel):
 
     surveyId: str
     responseId: str
-    participant: Optional[ParticipantModel] = None
+    participant: Optional[dict] = None
 
 
 @gdrive_blueprint.route("/survey-response", methods=["POST"])
