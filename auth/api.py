@@ -21,7 +21,7 @@ def verify_token(token):
     """
     Verify api key from header.
     """
-    return token == config["SECRET_KEY"]
+    return token in config["SECRET_KEYS"]
 
 
 @req_auth.error_handler

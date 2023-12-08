@@ -13,6 +13,6 @@ class TestConfig(BaseConfig):
     postgres_local_base = f"postgresql://{DB_USER}:{DB_PASSWORD}@localhost/"
     local_database_name = "idva_token"
 
-    SECRET_KEY = os.getenv("SECRET_KEY", "this_is_a_secret")
+    SECRET_KEYS = ["this_is_a_secret"]
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = postgres_local_base + local_database_name

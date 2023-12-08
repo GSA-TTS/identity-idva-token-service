@@ -21,7 +21,7 @@ class ProdConfig(BaseConfig):
     DEFAULT_SECONDS = 604800  # 7 days
     DEFAULT_USES = 1
 
-    SECRET_KEY = None
+    SECRET_KEYS = None
 
     GDRIVE_APP_HOST = os.getenv("GDRIVE_APP_HOST")
     GDRIVE_APP_PORT = os.getenv("GDRIVE_APP_PORT")
@@ -33,9 +33,9 @@ class ProdConfig(BaseConfig):
         for service in services["user-provided"]:
             if service["name"] == "token-service-secret":
                 log.info("Loading secret key from user service")
-                SECRET_KEY = service["credentials"]["key"]
+                SECRET_KEYS = service["credentials"]["keys"]
                 break
-        if SECRET_KEY == None:
+        if SECRET_KEYS == None:
             log.error("Unable to load secret key from user service")
         db_uri = services["aws-rds"][0]["credentials"]["uri"]
     except (json.JSONDecodeError, KeyError) as err:
