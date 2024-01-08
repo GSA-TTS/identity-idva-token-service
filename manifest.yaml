@@ -18,3 +18,5 @@ applications:
       DB_PASSWORD: "nothing"
       GDRIVE_APP_HOST: "idva-gdrive-((ENVIRONMENT_NAME)).apps.internal"
       GDRIVE_APP_PORT: 8080
+      QUALTRIX_APP_HOST: "idva-qualtrix-((ENVIRONMENT_NAME)).apps.internal"
+      QUALTRIX_APP_PORT: 8080

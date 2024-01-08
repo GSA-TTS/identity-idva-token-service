@@ -26,6 +26,9 @@ class ProdConfig(BaseConfig):
     GDRIVE_APP_HOST = os.getenv("GDRIVE_APP_HOST")
     GDRIVE_APP_PORT = os.getenv("GDRIVE_APP_PORT")
 
+    QUALTRIX_APP_HOST = os.getenv("QUALTRIX_APP_HOST")
+    QUALTRIX_APP_PORT = os.getenv("QUALTRIX_APP_PORT")
+
     vcap_services = os.getenv("VCAP_SERVICES", "")
 
     try:
@@ -41,7 +44,7 @@ class ProdConfig(BaseConfig):
     except (json.JSONDecodeError, KeyError) as err:
         log.warning("Unable to load db_uri from VCAP_SERVICES")
         log.debug("Error: %s", str(err))
-        db_uri = ""
+        db_uri = os.getenv("IDVA_DB_CONN_STR", None)
 
     # Sqlalchemy requires 'postgresql' as the protocol
     db_uri = db_uri.replace("postgres://", "postgresql://", 1)

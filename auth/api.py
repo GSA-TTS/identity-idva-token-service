@@ -1,4 +1,5 @@
 # server/auth/views.py
+from flask_cors import CORS, cross_origin
 import requests
 import flask_pydantic
 
@@ -10,8 +11,12 @@ from auth.models import Token
 from auth.responses import Responses
 from typing import Optional
 
+
 auth_blueprint = Blueprint("auth", __name__)
 gdrive_blueprint = Blueprint("gdrive", __name__)
+redirect_blueprint = Blueprint("redirect", __name__)
+
+CORS(redirect_blueprint)
 
 req_auth = HTTPTokenAuth(header="X-API-Key")
 
@@ -212,3 +217,26 @@ def export(body: SurveyParticipantModel):
         timeout=5,
     )
     return "Response ID successfully posted", 200
+
+
+class RedirectModel(BaseModel):
+    """
+    Request body format for the `/redirect` endpoint
+    """
+
+    surveyId: str
+    targetSurveyId: str
+    directoryId: str
+    responseId: str
+
+
+@redirect_blueprint.route("/", methods=["POST"])
+@flask_pydantic.validate()
+def get_redirect(body: RedirectModel):
+    resp = requests.post(
+        f"http://{config['QUALTRIX_APP_HOST']}:{config['QUALTRIX_APP_PORT']}/redirect",
+        data=body.json(),
+        timeout=5,
+    )
+
+    return resp.json()
