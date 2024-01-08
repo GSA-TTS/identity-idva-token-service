@@ -2,6 +2,7 @@
 from flask_cors import CORS, cross_origin
 import requests
 import flask_pydantic
+import logging
 
 from flask import Blueprint, request, make_response, jsonify
 from pydantic import BaseModel
@@ -16,7 +17,7 @@ auth_blueprint = Blueprint("auth", __name__)
 gdrive_blueprint = Blueprint("gdrive", __name__)
 redirect_blueprint = Blueprint("redirect", __name__)
 
-CORS(redirect_blueprint)
+CORS(redirect_blueprint, origins=["https://feedback.gsa.gov"])
 
 req_auth = HTTPTokenAuth(header="X-API-Key")
 
@@ -233,6 +234,9 @@ class RedirectModel(BaseModel):
 @redirect_blueprint.route("/", methods=["POST"])
 @flask_pydantic.validate()
 def get_redirect(body: RedirectModel):
+    logging.info(
+        f"Redirect request ({body.surveyId} -> {body.targetSurveyId}, {body.responseId}, {body.directoryId}) routing to Qualtrix"
+    )
     resp = requests.post(
         f"http://{config['QUALTRIX_APP_HOST']}:{config['QUALTRIX_APP_PORT']}/redirect",
         data=body.json(),
