@@ -243,4 +243,5 @@ def get_redirect(body: RedirectModel):
         timeout=5,
     )
 
-    return resp.json()
+    logging.info(f"Qualtrix Request returned with status code {resp.status_code}")
+    return resp.json(), resp.status_code
