@@ -28,6 +28,7 @@ class ProdConfig(BaseConfig):
 
     QUALTRIX_APP_HOST = os.getenv("QUALTRIX_APP_HOST")
     QUALTRIX_APP_PORT = os.getenv("QUALTRIX_APP_PORT")
+    QUALTRIX_DIRECTORY_ID = os.getenv("QUALTRIX_DIRECTORY_ID")
 
     LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
     logging.getLogger().setLevel(LOG_LEVEL)

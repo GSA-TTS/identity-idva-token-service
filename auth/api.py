@@ -1,4 +1,5 @@
 # server/auth/views.py
+import json
 from flask_cors import CORS, cross_origin
 import requests
 import flask_pydantic
@@ -227,11 +228,19 @@ class RedirectModel(BaseModel):
 @flask_pydantic.validate()
 def get_redirect(body: RedirectModel):
     logging.info(
-        f"Redirect request ({body.surveyId} -> {body.targetSurveyId}, {body.responseId}, {body.directoryId}) routing to Qualtrix"
+        f"Redirect request ({body.surveyId} -> {body.targetSurveyId}, {body.responseId}, {config['QUALTRIX_DIRECTORY_ID']}) routing to Qualtrix"
     )
+
     resp = requests.post(
         f"http://{config['QUALTRIX_APP_HOST']}:{config['QUALTRIX_APP_PORT']}/redirect",
-        data=body.json(),
+        data=json.dumps(
+            {
+                "surveyId": body.surveyId,
+                "targetSurveyId": body.targetSurveyId,
+                "directoryId": config["QUALTRIX_DIRECTORY_ID"],
+                "responseId": body.responseId,
+            }
+        ),
         timeout=5,
     )
 
