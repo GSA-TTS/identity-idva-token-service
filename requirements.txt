@@ -2,6 +2,7 @@ flask
 flask_httpauth
 flask_sqlalchemy
 flask_pydantic
+flask_cors
 gunicorn
 psycopg2
 requests

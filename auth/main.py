@@ -11,7 +11,8 @@ app.config.from_object(app_settings)
 config = app.config
 db = SQLAlchemy(app)
 
-from auth.api import auth_blueprint, gdrive_blueprint
+from auth.api import auth_blueprint, gdrive_blueprint, redirect_blueprint
 
 app.register_blueprint(auth_blueprint, url_prefix="/auth")
 app.register_blueprint(gdrive_blueprint, url_prefix="/export")
+app.register_blueprint(redirect_blueprint, url_prefix="/redirect")

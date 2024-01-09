@@ -44,4 +44,6 @@ jobs:
           --var ENVIRONMENT_NAME=${{ steps.cf-setup.outputs.target-environment }}
           --strategy rolling
       - name: Add network policies
-        run: cf add-network-policy token gdrive --protocol tcp --port 8080
+        run: | 
+          cf add-network-policy token gdrive --protocol tcp --port 8080
+          cf add-network-policy token qualtrix --protocol tcp --port 8080
