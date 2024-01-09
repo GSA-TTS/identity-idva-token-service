@@ -45,3 +45,5 @@ jobs:
           --strategy rolling
       - name: Add network policies
         run: cf add-network-policy token gdrive --protocol tcp --port 8080
+      - name: Add network policies
+        run: cf add-network-policy token qualtrix --protocol tcp --port 8080
