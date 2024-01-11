@@ -219,7 +219,6 @@ class RedirectModel(BaseModel):
 
     surveyId: str
     targetSurveyId: str
-    directoryId: str
     responseId: str
 
 
@@ -227,8 +226,9 @@ class RedirectModel(BaseModel):
 @flask_pydantic.validate()
 def get_redirect(body: RedirectModel):
     logging.info(
-        f"Redirect request ({body.surveyId} -> {body.targetSurveyId}, {body.responseId}, {body.directoryId}) routing to Qualtrix"
+        f"Redirect request ({body.surveyId} -> {body.targetSurveyId}, {body.responseId}) routing to Qualtrix"
     )
+
     resp = requests.post(
         f"http://{config['QUALTRIX_APP_HOST']}:{config['QUALTRIX_APP_PORT']}/redirect",
         data=body.json(),
