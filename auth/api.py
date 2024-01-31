@@ -220,8 +220,8 @@ class RedirectModel(BaseModel):
     surveyId: str
     targetSurveyId: str
     email: str
-    first_name: str
-    last_name: str
+    firstName: str
+    lastName: str
 
 
 @redirect_blueprint.route("/", methods=["POST"])
