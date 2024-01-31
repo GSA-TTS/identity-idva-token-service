@@ -219,14 +219,16 @@ class RedirectModel(BaseModel):
 
     surveyId: str
     targetSurveyId: str
-    responseId: str
+    email: str
+    first_name: str
+    last_name: str
 
 
 @redirect_blueprint.route("/", methods=["POST"])
 @flask_pydantic.validate()
 def get_redirect(body: RedirectModel):
     logging.info(
-        f"Redirect request ({body.surveyId} -> {body.targetSurveyId}, {body.responseId}) routing to Qualtrix"
+        f"Redirect request ({body.targetSurveyId}, {body.email}) routing to Qualtrix"
     )
 
     resp = requests.post(
