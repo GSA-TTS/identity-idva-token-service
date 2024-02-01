@@ -222,6 +222,7 @@ class RedirectModel(BaseModel):
     email: str
     firstName: str
     lastName: str
+    rulesConsentId: str
 
 
 @redirect_blueprint.route("/", methods=["POST"])
