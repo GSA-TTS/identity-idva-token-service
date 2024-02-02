@@ -219,10 +219,14 @@ class RedirectModel(BaseModel):
 
     surveyId: str
     targetSurveyId: str
+    RulesConsentID: str  # Client dependent
+    SurveyswapID: str  # Client dependent
+    utm_campaign: str
+    utm_medium: str
+    utm_source: str
     email: str
     firstName: str
     lastName: str
-    rulesConsentId: str
 
 
 @redirect_blueprint.route("/", methods=["POST"])
