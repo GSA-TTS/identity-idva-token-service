@@ -221,6 +221,7 @@ class RedirectModel(BaseModel):
     targetSurveyId: str
     RulesConsentID: str  # Client dependent
     SurveyswapID: str  # Client dependent
+    SurveyswapGroup: str  # Client dependent
     utm_campaign: str
     utm_medium: str
     utm_source: str
@@ -243,4 +244,5 @@ def get_redirect(body: RedirectModel):
     )
 
     logging.info(f"Qualtrix Request returned with status code {resp.status_code}")
+
     return resp.json(), resp.status_code
