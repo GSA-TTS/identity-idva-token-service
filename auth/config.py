@@ -19,6 +19,7 @@ class ProdConfig(BaseConfig):
 
     DEFAULT_SECONDS = 604800  # 7 days
     DEFAULT_USES = 1
+    MAX_RETRIES = 10
 
     SECRET_KEYS = None
 

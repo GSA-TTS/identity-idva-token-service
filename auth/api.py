@@ -9,6 +9,7 @@ import time
 from flask import Blueprint, request, make_response, jsonify
 from pydantic import BaseModel
 from flask_httpauth import HTTPTokenAuth
+from auth.gateway import APIWorker
 from auth.main import db, config
 from auth.models import Token
 from auth.responses import Responses
@@ -238,45 +239,9 @@ class RedirectModel(BaseModel):
 @redirect_blueprint.route("/", methods=["POST"])
 @flask_pydantic.validate()
 def get_redirect(body: RedirectModel):
-    # The client web service node in the qualtrics flow seems to be creating more requests than expected.
-    # I am not sure how the client manages returning the results. To be on the safe side, I want all of the
-    # threads to return the same value so it does not matter what order the requests are recieved in. It is possible
-    # that if I just return an error code if its being processed and nothing else, that no other retry will be initiated.
-    # This may be a little on the overkill side, but it does ensure that no matter what the behaviour of the
-    # client code is, one email generates one link and that link is always returned.
-
-    # Is the request being processed?
-    if cache.get(body.email) is None:
-        # No, This thread claims responsibility
-        cache[body.email] = -1
-        # Start work and publish result. This function is expensive
-        logging.info(
-            f"Redirect request ({body.targetSurveyId}, {body.email}) routing to Qualtrix"
-        )
-        resp = requests.post(
-            f"http://{config['QUALTRIX_APP_HOST']}:{config['QUALTRIX_APP_PORT']}/redirect",
-            data=body.json(),
-            timeout=5,
-        )
-        logging.info(f"Qualtrix Request returned with status code {resp.status_code}")
-        cache[body.email] = resp
-    elif cache.get(body.email) == -1:
-        # The job is being processed by another thread. Waiting...
-        attempts = 0
-        while cache.get(body.email) == -1:
-            if attempts > config.MAX_RETRIES:
-                # Return Gateway Timeout and Error Message
-                return {
-                    "error": "request was claimed by another thread but that thread never published the result"
-                }, 504
-            logging.info(
-                f"Redirect request ({body.targetSurveyId}, {body.email}) waiting..."
-            )
-            attempts += 1
-            time.sleep(1)
-
-    # Either the job was in one of the two states above and we returned from the subroutines,
-    # Or the job was not in either of the two states and so must be ready.
-    logging.info(f"Result for ({body.targetSurveyId}, {body.email}) found!")
-    result = cache.get(body.email)
-    return result.json(), result.status_code
+    return APIWorker(
+        key=body.email,
+        target_uri=f"http://{config['QUALTRIX_APP_HOST']}:{config['QUALTRIX_APP_PORT']}/redirect",
+        body=body.json(),
+        ttl=15,
+    ).launch()
