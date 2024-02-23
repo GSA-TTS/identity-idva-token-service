@@ -1,10 +1,7 @@
 # server/auth/views.py
-from itertools import count
 from flask_cors import CORS, cross_origin
 import requests
 import flask_pydantic
-import logging
-import time
 
 from flask import Blueprint, request, make_response, jsonify
 from pydantic import BaseModel
@@ -14,7 +11,6 @@ from auth.main import db, config
 from auth.models import Token
 from auth.responses import Responses
 from typing import Optional
-from expiringdict import ExpiringDict
 
 
 auth_blueprint = Blueprint("auth", __name__)
@@ -24,8 +20,6 @@ redirect_blueprint = Blueprint("redirect", __name__)
 CORS(redirect_blueprint, origins=["https://feedback.gsa.gov"])
 
 req_auth = HTTPTokenAuth(header="X-API-Key")
-
-cache = ExpiringDict(max_len=100, max_age_seconds=60)
 
 
 @req_auth.verify_token
@@ -243,5 +237,5 @@ def get_redirect(body: RedirectModel):
         key=body.email,
         target_uri=f"http://{config['QUALTRIX_APP_HOST']}:{config['QUALTRIX_APP_PORT']}/redirect",
         body=body.json(),
-        ttl=15,
+        ttl=60,
     ).launch()

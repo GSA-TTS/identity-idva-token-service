@@ -13,6 +13,15 @@ from auth.models import APIWorkerModel
 
 
 class APIWorker:
+    """
+    Rate limiter for token gateway.
+
+    This class makes use of the token-db to cache requests made to the token gateway.
+    A rate limiting endpoint can define a key and register instances of this class with
+    it. When launch() is called, the instance attempts to write a unique row to the
+    gateway_workers table, and if successful in that write, sends the HTTP request.
+    """
+
     worker: APIWorkerModel = None
 
     def __init__(self, key: str, target_uri: str, body: str, ttl: int) -> None:
@@ -25,7 +34,9 @@ class APIWorker:
 
     def launch(self) -> str:
         """
-        Attempt to initiate a new APIWorker for this instance on
+        Attempt to initiate a new APIWorker for this instance in token-db. If the db
+        write is unsuccessful, block waiting for the "prime" process to write the
+        result to the database.
 
         Returns:
             str: The JSON result, or error
@@ -78,6 +89,8 @@ class APIWorker:
                     db.session.add(self.worker)
                     db.session.commit()  # Commit the transaction
                     return True
+
+            # Some other process picked up the task
             return False
         except IntegrityError:
             # Handle integrity errors if the worker creation fails

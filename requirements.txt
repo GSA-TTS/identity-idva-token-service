@@ -7,4 +7,3 @@ gunicorn
 psycopg2
 requests
 pydantic
-expiringdict
