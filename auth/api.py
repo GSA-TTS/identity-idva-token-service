@@ -2,11 +2,11 @@
 from flask_cors import CORS, cross_origin
 import requests
 import flask_pydantic
-import logging
 
 from flask import Blueprint, request, make_response, jsonify
 from pydantic import BaseModel
 from flask_httpauth import HTTPTokenAuth
+from auth.gateway import APIWorker
 from auth.main import db, config
 from auth.models import Token
 from auth.responses import Responses
@@ -233,16 +233,9 @@ class RedirectModel(BaseModel):
 @redirect_blueprint.route("/", methods=["POST"])
 @flask_pydantic.validate()
 def get_redirect(body: RedirectModel):
-    logging.info(
-        f"Redirect request ({body.targetSurveyId}, {body.email}) routing to Qualtrix"
-    )
-
-    resp = requests.post(
-        f"http://{config['QUALTRIX_APP_HOST']}:{config['QUALTRIX_APP_PORT']}/redirect",
-        data=body.json(),
-        timeout=5,
-    )
-
-    logging.info(f"Qualtrix Request returned with status code {resp.status_code}")
-
-    return resp.json(), resp.status_code
+    return APIWorker(
+        key=body.email,
+        target_uri=f"http://{config['QUALTRIX_APP_HOST']}:{config['QUALTRIX_APP_PORT']}/redirect",
+        body=body.json(),
+        ttl=60,
+    ).launch()
