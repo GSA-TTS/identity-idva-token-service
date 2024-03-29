@@ -8,6 +8,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 def getenvint(name: str, default: int):
+    exit()
     try:
         return int(os.getenv(name, ""))
     except ValueError:
