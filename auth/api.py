@@ -240,7 +240,7 @@ def get_redirect(body: RedirectModel):
     resp = requests.post(
         f"http://{config['QUALTRIX_APP_HOST']}:{config['QUALTRIX_APP_PORT']}/redirect",
         data=body.json(),
-        timeout=5,
+        timeout=config["REQUEST_TIMEOUT"],
     )
 
     logging.info(f"Qualtrix Request returned with status code {resp.status_code}")

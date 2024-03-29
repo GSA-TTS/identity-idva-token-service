@@ -22,6 +22,8 @@ class ProdConfig(BaseConfig):
 
     SECRET_KEYS = None
 
+    REQUEST_TIMEOUT = getenvint("REQUEST_TIMEOUT", 10)
+
     GDRIVE_APP_HOST = os.getenv("GDRIVE_APP_HOST")
     GDRIVE_APP_PORT = os.getenv("GDRIVE_APP_PORT")
 
@@ -50,3 +52,11 @@ class ProdConfig(BaseConfig):
     db_uri = db_uri.replace("postgres://", "postgresql://", 1)
 
     SQLALCHEMY_DATABASE_URI = db_uri
+
+
+def getenvint(name: str, default: int):
+    env_var = os.getenv(name, "")
+    try:
+        return int(env_var)
+    except ValueError:
+        return default

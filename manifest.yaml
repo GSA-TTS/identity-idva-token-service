@@ -19,3 +19,4 @@ applications:
       GDRIVE_APP_PORT: 8080
       QUALTRIX_APP_HOST: "idva-qualtrix-((ENVIRONMENT_NAME)).apps.internal"
       QUALTRIX_APP_PORT: 8080
+      REQUEST_TIMEOUT: 10
