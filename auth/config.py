@@ -7,6 +7,13 @@ import logging
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
+def getenvint(name: str, default: int):
+    try:
+        return int(os.getenv(name, ""))
+    except ValueError:
+        return default
+
+
 class BaseConfig:
     """Base configuration."""
 
@@ -52,10 +59,3 @@ class ProdConfig(BaseConfig):
     db_uri = db_uri.replace("postgres://", "postgresql://", 1)
 
     SQLALCHEMY_DATABASE_URI = db_uri
-
-
-def getenvint(name: str, default: int):
-    try:
-        return int(os.getenv(name, ""))
-    except ValueError:
-        return default
