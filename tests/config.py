@@ -10,6 +10,8 @@ class TestConfig(BaseConfig):
     DB_USER = os.getenv("DB_USER")
     DB_PASSWORD = os.getenv("DB_PASSWORD")
 
+    REQUEST_TIMEOUT = 10
+
     postgres_local_base = f"postgresql://{DB_USER}:{DB_PASSWORD}@localhost/"
     local_database_name = "idva_token"
 

@@ -21,6 +21,8 @@ CORS(redirect_blueprint, origins=["https://feedback.gsa.gov"])
 
 req_auth = HTTPTokenAuth(header="X-API-Key")
 
+_timeout: int = config["REQUEST_TIMEOUT"]
+
 
 @req_auth.verify_token
 def verify_token(token):
@@ -207,7 +209,7 @@ def export(body: SurveyParticipantModel):
     requests.post(
         f"http://{config['GDRIVE_APP_HOST']}:{config['GDRIVE_APP_PORT']}/survey-export",
         data=body.json(),
-        timeout=5,
+        timeout=_timeout,
     )
     return "Response ID successfully posted", 200
 
@@ -240,7 +242,7 @@ def get_redirect(body: RedirectModel):
     resp = requests.post(
         f"http://{config['QUALTRIX_APP_HOST']}:{config['QUALTRIX_APP_PORT']}/redirect",
         data=body.json(),
-        timeout=5,
+        timeout=_timeout,
     )
 
     logging.info(f"Qualtrix Request returned with status code {resp.status_code}")

@@ -7,6 +7,13 @@ import logging
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
+def getenvint(name: str, default: int):
+    try:
+        return int(os.getenv(name, ""))
+    except ValueError:
+        return default
+
+
 class BaseConfig:
     """Base configuration."""
 
@@ -21,6 +28,8 @@ class ProdConfig(BaseConfig):
     DEFAULT_USES = 1
 
     SECRET_KEYS = None
+
+    REQUEST_TIMEOUT = getenvint("REQUEST_TIMEOUT", 10)
 
     GDRIVE_APP_HOST = os.getenv("GDRIVE_APP_HOST")
     GDRIVE_APP_PORT = os.getenv("GDRIVE_APP_PORT")
