@@ -55,8 +55,7 @@ class ProdConfig(BaseConfig):
 
 
 def getenvint(name: str, default: int):
-    env_var = os.getenv(name, "")
     try:
-        return int(env_var)
+        return int(os.getenv(name, ""))
     except ValueError:
         return default
